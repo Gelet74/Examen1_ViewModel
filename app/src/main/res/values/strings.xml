@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Examen1_ViewModel</string>
+    <string name="anadir">Añadir Persona</string>
+    <string name="codigo">Código:</string>
+    <string name="nombre">Nombre</string>
+    <string name="rol">Elige el rol</string>
+</resources>
