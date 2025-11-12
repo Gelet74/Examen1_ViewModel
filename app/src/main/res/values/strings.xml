@@ -4,4 +4,6 @@
     <string name="codigo">Código:</string>
     <string name="nombre">Nombre</string>
     <string name="rol">Elige el rol</string>
+    <string name="btn_anadir">Añadir</string>
+    <string name="btn_cancelar">Cancelar</string>
 </resources>

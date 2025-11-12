@@ -18,19 +18,19 @@ class AppViewModel: ViewModel() {
     private set
 
     var cursoMatSeleccionado by mutableStateOf("")
-    private set
+        private set
 
     var NIASeleccionado by mutableStateOf("")
-    private set
+        private set
 
     var codigoIdent by mutableStateOf("")
-    private set
+        private set
 
     var cursosImpaSeleccionado by mutableStateOf("")
-    private set
+        private set
 
-    var tutor by mutableStateOf(false)
-    private set
+    var esTutor by mutableStateOf(false)
+        private set
 
     var codIden by mutableStateOf("")
         private set
@@ -43,6 +43,9 @@ class AppViewModel: ViewModel() {
         val impares = n.filterIndexed { i, _-> i%2 == 0 }
         return ultimaLetra+impares
     }
+    fun actualizarCodIden(nuevoCodigo: String) {
+        codIden = nuevoCodigo
+    }
 
     fun generarCodigoProfesor (nombre:String, esTutor: Boolean):String {
        val n=nombre.trim()
@@ -50,6 +53,12 @@ class AppViewModel: ViewModel() {
         val invertido = n.reversed()
         val tutorTxt = if (esTutor) "SI" else "NO"
         return invertido+tutorTxt
+    }
+    fun actualizarCodigoIdent(nuevoCodigo: String) {
+        codigoIdent = nuevoCodigo
+    }
+    fun actualizarNIA(nuevo: String) {
+        cursoMatSeleccionado = nuevo
     }
     fun actualizarNombre(nuevo: String) {
         nombreSeleccionado = nuevo
