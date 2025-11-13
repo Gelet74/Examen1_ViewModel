@@ -1,7 +1,6 @@
 package com.example.examen1_viewmodel
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,21 +36,22 @@ import com.example.examen1_viewmodel.ui.appViewModel.AppViewModel
 @Composable
 fun AnadirPersona(viewModel: AppViewModel = viewModel(), modifier: Modifier =
 Modifier) {
-    var opcionSeleccionada by remember { mutableStateOf("") }
+    var rolSeleccionado by remember { mutableStateOf("") }
+    var cursoSeleccionado by remember { mutableStateOf("") }
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+             horizontalAlignment = Alignment.CenterHorizontally,
+             //verticalArrangement = Arrangement.SpaceBetween
     ) {
-
-
             Text(
                 text = stringResource(R.string.anadir),
                 style = MaterialTheme.typography.headlineMedium
             )
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(8.dp))
 
             Text(
                 text = stringResource(R.string.codigo),
@@ -65,14 +66,8 @@ Modifier) {
                 modifier = Modifier.width(250.dp)
             )
 
+            Spacer(Modifier.height(height=8.dp))
 
-
-        Column(
-            modifier = Modifier
-                .weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
             Text(
                 text = stringResource(R.string.rol),
                 style = MaterialTheme.typography.titleLarge
@@ -92,7 +87,7 @@ Modifier) {
                 )
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(8.dp))
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -101,46 +96,109 @@ Modifier) {
                 listOf("Alumno", "Profesor").forEach { opcion ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         RadioButton(
-                            selected = (opcion == opcionSeleccionada),
-                            onClick = { opcionSeleccionada = opcion }
+                            selected = (opcion == rolSeleccionado ),
+                            onClick = { rolSeleccionado  = opcion }
                         )
                         Text(text = opcion)
                     }
                 }
             }
-        }
-
-
-        Row(
-            modifier = Modifier
-                .weight(0.5f)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.Bottom
+        Column (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            //verticalAlignment = Alignment.CenterVertically
         ) {
-            if (opcionSeleccionada == "Alumno") {
-                BotonAnadir(
-                    onClick = {
-                        val codigo = viewModel.generarCodigoAlumno(
-                            nombre = viewModel.nombreSeleccionado,
-                            NIA = viewModel.NIASeleccionado
-                        )
-                        viewModel.actualizarCodIden(codigo)
-                    }
+            if (rolSeleccionado == "Alumno") {
+
+                OutlinedTextField(
+                    value = viewModel.NIASeleccionado ,
+                    onValueChange = viewModel::actualizarNIA,
+                    label = { Text(stringResource(R.string.nia)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.width(250.dp)
                 )
-                BotonCancelar(onClick = { /* acción cancelar */ })
-            } else if (opcionSeleccionada == "Profesor") {
-                BotonAnadir(
-                    onClick = {
-                        val codigo = viewModel.generarCodigoProfesor(
-                            nombre = viewModel.nombreSeleccionado,
-                            esTutor = viewModel.esTutor
-                        )
-                        viewModel.actualizarCodigoIdent(codigo)
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                    ) {
+                    Text(
+                        text = stringResource(R.string.curso),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Column {
+                        listOf("Primero", "Segundo").forEach { opcion ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(
+                                    selected = (opcion == cursoSeleccionado),
+                                    onClick = { cursoSeleccionado = opcion }
+                                )
+                                Text(text = opcion)
+                            }
+                        }
                     }
-                )
-                BotonCancelar(onClick = { /* acción cancelar */ })
+                }
+                Spacer(Modifier.height(150.dp))
+                Row    ( modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly){
+                    BotonAnadir(
+                        onClick = {
+                            val codigo = viewModel.generarCodigoAlumno(
+                                nombre = viewModel.nombreSeleccionado,
+                                NIA = viewModel.NIASeleccionado
+                            )
+                            viewModel.actualizarCodIden(codigo)
+                        }
+                    )
+
+                    BotonCancelar(onClick = { /* acción cancelar */ })
+                }
+            } else if (rolSeleccionado == "Profesor") {
+                SwitchTutor(viewModel)
+
+                Spacer(Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.curso),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Column {
+                        listOf("Primero", "Segundo").forEach { opcion ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(
+                                    selected = (opcion == cursoSeleccionado),
+                                    onClick = { cursoSeleccionado = opcion }
+                                )
+                                Text(text = opcion)
+                            }
+                        }
+                    }
+                }
+                Spacer(Modifier.height(150.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    BotonAnadir(
+                        onClick = {
+                            val codigo = viewModel.generarCodigoProfesor(
+                                nombre = viewModel.nombreSeleccionado,
+                                esTutor = viewModel.esTutor
+                            )
+                            viewModel.actualizarCodigoIdent(codigo)
+                        }
+                    )
+                    BotonCancelar(onClick = { /* acción cancelar */ })
+                }
             }
+
         }
     }
 }
@@ -159,3 +217,14 @@ fun BotonAnadir(onClick: () -> Unit, modifier: Modifier = Modifier) {
         Text(text = stringResource(R.string.btn_anadir))
     }
 }
+    @Composable
+    fun SwitchTutor(viewModel: AppViewModel) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = stringResource(R.string.tutor))
+            Switch(
+                checked = viewModel.esTutor,
+                onCheckedChange = { viewModel.actualizarTutor(it) }
+            )
+        }
+    }
+

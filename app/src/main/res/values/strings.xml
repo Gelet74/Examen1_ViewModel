@@ -6,4 +6,7 @@
     <string name="rol">Elige el rol</string>
     <string name="btn_anadir">Añadir</string>
     <string name="btn_cancelar">Cancelar</string>
+    <string name="nia">NIA</string>
+    <string name="curso">Curso</string>
+    <string name="tutor">Tutor</string>
 </resources>
