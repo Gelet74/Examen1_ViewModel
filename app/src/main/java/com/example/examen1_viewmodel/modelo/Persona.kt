@@ -6,7 +6,7 @@ open class Persona(
 
 class Alumno(
     override val nombre: String = "",
-    val cursoMat: String = "",
+    val cursoSeleccionado: String = "",
     val NIA: String = "",
     val codIden: String = ""
 ): Persona(nombre)

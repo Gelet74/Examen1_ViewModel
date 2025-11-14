@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -62,6 +63,7 @@ Modifier) {
             OutlinedTextField(
                 value = viewModel.nombreSeleccionado,
                 onValueChange = viewModel::actualizarNombre,
+                singleLine = true,
                 label = { Text(stringResource(R.string.nombre)) },
                 modifier = Modifier.width(250.dp)
             )
@@ -114,8 +116,13 @@ Modifier) {
                     value = viewModel.NIASeleccionado ,
                     onValueChange = viewModel::actualizarNIA,
                     label = { Text(stringResource(R.string.nia)) },
+                    singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.width(250.dp)
+                    modifier = Modifier.width(250.dp),
+                    textStyle = androidx.compose.ui.text.TextStyle(
+                        if (viewModel.NIASeleccionado=="00000")
+                            Color.Red else Color.Black
+                    )
                 )
 
                 Row(
@@ -131,8 +138,10 @@ Modifier) {
                         listOf("Primero", "Segundo").forEach { opcion ->
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 RadioButton(
-                                    selected = (opcion == cursoSeleccionado),
-                                    onClick = { cursoSeleccionado = opcion }
+                                    selected = (opcion == viewModel.cursoSeleccionado),
+
+                                    onClick = { viewModel.actualizarCurso(opcion) }
+
                                 )
                                 Text(text = opcion)
                             }
@@ -149,6 +158,7 @@ Modifier) {
                                 NIA = viewModel.NIASeleccionado
                             )
                             viewModel.actualizarCodIden(codigo)
+                            viewModel.registrarAlumnoActual()
                         }
                     )
 
@@ -193,6 +203,7 @@ Modifier) {
                                 esTutor = viewModel.esTutor
                             )
                             viewModel.actualizarCodigoIdent(codigo)
+                            viewModel.registrarProfesorActual()
                         }
                     )
                     BotonCancelar(onClick = { /* acción cancelar */ })
@@ -220,7 +231,8 @@ fun BotonAnadir(onClick: () -> Unit, modifier: Modifier = Modifier) {
     @Composable
     fun SwitchTutor(viewModel: AppViewModel) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = stringResource(R.string.tutor))
+            Text(text = stringResource(R.string.tutor),
+            modifier = Modifier .padding(end = 8.dp))
             Switch(
                 checked = viewModel.esTutor,
                 onCheckedChange = { viewModel.actualizarTutor(it) }

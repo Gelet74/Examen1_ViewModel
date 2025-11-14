@@ -1,4 +1,7 @@
 package com.example.examen1_viewmodel.modelo
 
-class AppUIState {
-}
+data class AppUIState (
+
+   val alumnos: List<Alumno> = emptyList(),
+    val profesores: List<Profesor> = emptyList()
+)

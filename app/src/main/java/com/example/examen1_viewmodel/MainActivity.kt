@@ -20,8 +20,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             Examen1_ViewModelTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    AnadirPersona(
-                        modifier = Modifier.padding(innerPadding)
+                    ListarPersona(
+                        //modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
@@ -29,18 +29,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Examen1_ViewModelTheme {
-        AnadirPersona()
+        ListarPersona()
     }
 }
